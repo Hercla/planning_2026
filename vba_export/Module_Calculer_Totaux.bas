@@ -647,6 +647,8 @@ NextPerson:
                 End If
             End If
         Next blk
+        ' Masquer colonne B en mode Nuit aussi
+        ws.Columns("B").Hidden = True
     End If
 
     MsgBox "Cockpit OK - " & Format$(Timer - startTime, "0.00") & "s", vbInformation

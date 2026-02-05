@@ -89,13 +89,9 @@ Private Sub ApplyMode(mode As ViewMode)
         On Error GoTo CleanUp
     End If
 
-    ' 6) Column B - Always hide in Mode Jour, show in Mode Nuit
+    ' 6) Column B - Always hidden in both modes
     On Error Resume Next
-    If mode = ViewJour Then
-        ws.Columns("B").Hidden = True
-    Else
-        ws.Columns("B").Hidden = False
-    End If
+    ws.Columns("B").Hidden = True
     On Error GoTo CleanUp
 
     ' 7) Menu columns
