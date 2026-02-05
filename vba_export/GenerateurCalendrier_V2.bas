@@ -59,7 +59,7 @@ Public Sub GenererDatesEtJoursPourTousLesMois()
     
     keepHeaderRows = Module_Config.CfgTextOr("VIEW_HeaderRows_Keep", "")
     yearCellAddress = Module_Config.CfgTextOr("VIEW_YearCell", "")
-    If Len(yearCellAddress) = 0 Then yearCellAddress = "B1"
+    If Len(yearCellAddress) = 0 Then yearCellAddress = "A1"
     
     localeKey = Module_Config.CfgTextOr("CFG_Locale", "")
     
