@@ -97,3 +97,54 @@ Private Sub ApplyCodeAndMove(ByVal code As String)
         On Error GoTo 0
     End With
 End Sub
+Option Explicit
+
+  Public Sub ToggleAsterisqueCellule()
+      Dim c As Range
+      Set c = ActiveCell
+      If c Is Nothing Then Exit Sub
+
+      Dim t As String
+      t = CStr(c.value)
+
+      If InStr(t, "*") > 0 Then
+          t = Replace(t, "*", "")
+          c.value = Trim(t)
+      Else
+          If Len(t) = 0 Then
+              c.value = "*"
+          Else
+              c.value = t & " *"
+          End If
+      End If
+  End Sub
+Option Explicit
+
+  Public Sub ToggleColorierCelluleVertFonce()
+      Dim c As Range
+      Set c = ActiveCell
+      If c Is Nothing Then Exit Sub
+
+      Dim greenColor As Long
+      greenColor = RGB(0, 128, 0) ' vert foncé
+
+      If c.Interior.Color = greenColor Then
+          c.Interior.ColorIndex = xlNone
+      Else
+          c.Interior.Color = greenColor
+      End If
+  End Sub
+ Public Sub ToggleColorierCelluleBleuClair()
+      Dim c As Range
+      Set c = ActiveCell
+      If c Is Nothing Then Exit Sub
+
+      Dim blue As Long
+      blue = RGB(204, 232, 255) ' bleu clair
+
+      If c.Interior.Color = blue Then
+          c.Interior.ColorIndex = xlNone
+      Else
+          c.Interior.Color = blue
+      End If
+  End Sub

@@ -1,0 +1,41 @@
+Cle;Valeur;Description
+CHK_FirstPersonnelRow;6;Premiere ligne personnel
+ligneFin;28;Derniere ligne personnel
+PLN_FirstDayCol;3;Premiere colonne jours (C=3)
+PLN_LastDayCol;33;Derniere colonne jours (AG=33)
+PLN_Row_DayNumbers;4;Ligne numeros de jours
+CHK_IgnoreColor;15849925;Couleur a ignorer (beige)
+CHK_InfFunctions;INF,AS,CEFA;Fonctions a compter
+CALC_ROW_Matin;60;Ligne Total Matin
+CALC_ROW_AM;61;Ligne Total Apres-midi
+CALC_ROW_Soir;62;Ligne Total Soir
+CALC_ROW_Nuit;63;Ligne Total Nuit
+CALC_ROW_P_0645;64;Ligne Presence 06H45
+CALC_ROW_P_7H8H;65;Ligne Presence 7H-8H
+CALC_ROW_P_8H1630;66;Ligne Presence 8H-16H30
+CALC_ROW_C15;67;Ligne Code C15
+CALC_ROW_C20;68;Ligne Code C20
+CALC_ROW_C20E;69;Ligne Code C20E
+CALC_ROW_C19;70;Ligne Code C19
+COULEUR_INF_ADMIN;65535;Jaune - INF admin ou CEFA formation (exclure du total)
+COULEUR_BLEU_CLAIR;15128749;Couleur Bleu Clair (Bains) - Mamadou/Edelyne - EXCLURE
+ALERT_SEUIL_MIN_INF;2;Seuil minimum INF par periode
+EFF_SEM_Matin;7;Effectif semaine Matin
+EFF_SEM_PM;3;Effectif semaine PM
+EFF_SEM_Soir;3;Effectif semaine Soir
+EFF_SEM_Nuit;2;Effectif semaine Nuit
+EFF_WE_Matin;5;Effectif weekend Matin
+EFF_WE_PM;2;Effectif weekend PM
+EFF_WE_Soir;3;Effectif weekend Soir
+EFF_WE_Nuit;2;Effectif weekend Nuit
+EFF_FER_Matin;5;Effectif ferie Matin
+EFF_FER_PM;2;Effectif ferie PM
+EFF_FER_Soir;3;Effectif ferie Soir
+EFF_FER_Nuit;2;Effectif ferie Nuit
+CFG_Year;2026;Annee de reference
+SPECIAL_C15;8 12:15 16:30 20:15;Horaires C15
+SPECIAL_C19;7 11:30 15:30 19;Horaires C19
+SPECIAL_C20;8 12 16 20;Horaires C20
+SPECIAL_C20E;8 11:30 15:30 20;Horaires C20E
+VIEW_Jour_HideBlocks;5:5|31:39|43:45|46:47|48:58|71:150;Lignes a masquer en mode Jour
+VIEW_Nuit_HideBlocks;5:28|39:45|48:58|60:62|64:70;Lignes a masquer en mode Nuit

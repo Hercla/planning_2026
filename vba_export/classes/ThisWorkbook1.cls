@@ -31,9 +31,9 @@ Private Sub Workbook_BeforeClose(Cancel As Boolean)
     Module_CFG_Events.CFG_OnWorkbookClose_CancelPending
     On Error GoTo 0
 End Sub
-Private Sub Worksheet_Change(ByVal Target As Range)
-    If Not Intersect(Target, Range("AG41")) Is Nothing Then ' Vérifie si la cellule modifiée est AG41
-        If Target.value = "x" Then
+Private Sub Worksheet_Change(ByVal target As Range)
+    If Not Intersect(target, Range("AG41")) Is Nothing Then ' Vérifie si la cellule modifiée est AG41
+        If target.value = "x" Then
             Call UpdateF3     'appelle la macro UpdateF3 pour mettre à jour la valeur de F3
             Range("Us 1D 1").Copy 'copie les données à coller
             Sheets.Add After:=Sheets(Sheets.count) 'ajoute un nouvel onglet

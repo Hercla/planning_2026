@@ -1,0 +1,31 @@
+Section,Indicateur,Regle,Valeur_Attendue,Plage1_Debut,Plage1_Fin,Plage2_Debut,Plage2_Fin,Ligne,Type_Donnee,Description
+REGLES_PRESENCE,P_0645,Commence à 6h45 pile (rapport de nuit),1,,,,,,
+REGLES_PRESENCE,P_7H8H,Présent entre 7h-8h,3,,,,,,
+REGLES_PRESENCE,P_8H1630,Couvre 8h à 16h30 (binôme C19),1,,,,,,
+,,,,,,,,,,
+CODES_COUPES,C 15,,,,8:00,12:15,16:30,20:15,,
+CODES_COUPES,C 20,,,,8:00,12:00,16:00,20:00,,
+CODES_COUPES,C 20 E,,,,8:00,11:30,15:30,20:00,,
+CODES_COUPES,C 19,,,,7:00,11:30,15:30,19:00,,
+,,,,,,,,,,
+LIGNES_DESTINATION,,,,,,,,,60,Matin,Total présences matin
+LIGNES_DESTINATION,,,,,,,,,61,AM,Total présences après-midi
+LIGNES_DESTINATION,,,,,,,,,62,Soir,Total présences soir
+LIGNES_DESTINATION,,,,,,,,,63,Nuit,Total présences nuit
+LIGNES_DESTINATION,,,,,,,,,64,P_0645,Présences à 6h45
+LIGNES_DESTINATION,,,,,,,,,65,P_7H8H,Présences 7h-8h
+LIGNES_DESTINATION,,,,,,,,,66,P_8H1630,Présences 8h-16h30
+LIGNES_DESTINATION,,,,,,,,,67,C15,Codes C15
+LIGNES_DESTINATION,,,,,,,,,68,C20,Codes C20
+LIGNES_DESTINATION,,,,,,,,,69,C20E,Codes C20E
+LIGNES_DESTINATION,,,,,,,,,70,C19,Codes C19
+,,,,,,,,,,
+PARAMETRES_GENERAUX,LIGNE_DATES_SOURCE,,,,,,,4,,Ligne source des dates (en-tête)
+PARAMETRES_GENERAUX,LIGNE_DATES_DEST,,,,,,,63,,Ligne destination copie des dates
+PARAMETRES_GENERAUX,SEUIL_MIN_INF,,,,,,,2,,Seuil minimum INF par période
+PARAMETRES_GENERAUX,LIGNE_DEBUT_PERSONNEL,,,,,,,6,,Première ligne personnel
+PARAMETRES_GENERAUX,LIGNE_FIN_PERSONNEL,,,,,,,28,,Dernière ligne personnel
+PARAMETRES_GENERAUX,COL_DEBUT,,,,,,,2,,Première colonne (B=2)
+PARAMETRES_GENERAUX,COL_FIN,,,,,,,32,,Dernière colonne (AF=32)
+PARAMETRES_GENERAUX,COL_DEBUT_CALC,,,,,,,3,,Première colonne calcul (C=3)
+PARAMETRES_GENERAUX,COL_FIN_CALC,,,,,,,33,,Dernière colonne calcul (AG=33)

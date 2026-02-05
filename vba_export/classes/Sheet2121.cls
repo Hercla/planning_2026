@@ -12,15 +12,15 @@ Private Sub CommandButton120_Click()
 End Sub
 ' === MODULE FEUILLE "Roulements" ===
 
-Private Sub Worksheet_Change(ByVal Target As Range)
+Private Sub Worksheet_Change(ByVal target As Range)
     On Error GoTo fin
     ' Ne déclenche la logique que si la modification est dans la plage des horaires
-    If Not Intersect(Target, Range("D6:BG31")) Is Nothing Then
+    If Not Intersect(target, Range("D6:BG31")) Is Nothing Then
         Application.EnableEvents = False
         Application.ScreenUpdating = False
         Application.Calculation = xlCalculationManual
 
-        Call RecopieCyclique(Target)
+        Call RecopieCyclique(target)
 
 fin:
         Application.EnableEvents = True
@@ -30,20 +30,20 @@ fin:
 End Sub
 
 ' Recopie le code horaire cycliquement selon la valeur colonne C (cycle 1 à 4)
-Private Sub RecopieCyclique(Target As Range)
+Private Sub RecopieCyclique(target As Range)
     Dim cyc As Long, codeHoraire As Variant
     Dim colDebut As Long, colFin As Long, colActuelle As Long
 
-    cyc = Cells(Target.row, "C").value
-    codeHoraire = Target.value
+    cyc = Cells(target.row, "C").value
+    codeHoraire = target.value
     If cyc >= 1 And cyc <= 4 Then
-        FormatCelluleHoraire Target, codeHoraire, Target
-        colDebut = Target.Column
+        FormatCelluleHoraire target, codeHoraire, target
+        colDebut = target.Column
         colFin = Range("BG1").Column
         colActuelle = colDebut + (cyc * 7)
         Do While colActuelle <= colFin
-            Cells(Target.row, colActuelle).value = codeHoraire
-            FormatCelluleHoraire Cells(Target.row, colActuelle), codeHoraire, Target
+            Cells(target.row, colActuelle).value = codeHoraire
+            FormatCelluleHoraire Cells(target.row, colActuelle), codeHoraire, target
             colActuelle = colActuelle + (cyc * 7)
         Loop
     End If

@@ -1,0 +1,81 @@
+Cle,Valeur,Description,Type
+CFG_Year,2026,Année de référence (utilisée partout),Long
+CFG_Locale,fr-BE,Locale affichage (jours),Text
+SHEET_FeuilConfig,Feuil_Config,Nom feuille configuration,Text
+SHEET_ConfigCodes,Config_Codes,Nom feuille codes,Text
+SHEET_ConfigCalendar,Config_Calendrier,Nom feuille palette/admin (ex-Acceuil),Text
+SHEET_ConfigCTR,Configuration_CTR_CheckWeek,Nom feuille statuts/log,Text
+SHEET_Personnel,Personnel,Nom feuille personnel,Text
+SHEET_Roulements,Roulements,Nom feuille roulements,Text
+SHEET_Remplacants,Remplacants,Nom feuille remplaçants,Text
+PLN_FirstDayCol,3,Colonne début jours (C=3),Long
+PLN_LastDayCol,33,Colonne fin jours (AG=33),Long
+PLN_Row_DayNames,3,Ligne jours (Lun/Mar/...),Long
+PLN_Row_DayNumbers,4,Ligne numéros (1..31),Long
+PLN_RangeName_Planning,Planning,Nom de plage planning,Text
+VIEW_HeaderRows_Keep,3:4,Lignes à toujours garder visibles,Text
+VIEW_NameCol_A,A,Colonne noms (pour auto-hide),Text
+VIEW_AutoHide_FirstRow,6,Début auto-hide noms,Long
+VIEW_AutoHide_LastRow,150,Fin auto-hide noms,Long
+VIEW_MenuCols,AH:AO,Colonnes menu à masquer,Text
+VIEW_Zoom,70,Zoom d'affichage,Long
+VIEW_HideColumnB,TRUE,Masquer colonne B (TRUE/FALSE),Bool
+VIEW_Jour_DynamicRows,"6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,40,41,42",Lignes dynamiques jour,Text
+VIEW_Jour_HideBlocks,5:5;31:39;43:45;46:47;48:58;71:150,Blocs à masquer en mode Jour,Text
+VIEW_Nuit_DynamicRows,"31,32,33,34,35,36,37,38,46,47",Lignes dynamiques nuit,Text
+VIEW_Nuit_HideBlocks,5:28;39:45;48:58;60:62;64:70,Blocs à masquer en mode Nuit,Text
+PAL_W_C19,W13,Cellule palette C19 (Config_Calendrier),Text
+PAL_W_1230_1630,W29,Cellule palette 12:30 16:30,Text
+PAL_W_LongShift,W34,Cellule palette shift long,Text
+PAL_W_WE,W32,Cellule palette WE,Text
+QC_UnknownStatus_BlockThreshold,3,Blocage MAJ fractions si > X statuts inconnus,Long
+QC_TypoDistanceThreshold,2,Distance max typo probable,Long
+CHK_HeaderRow,4,Ligne des numeros de jours,Long
+CHK_FirstPersonnelRow,6,Premiere ligne personnel,Long
+CHK_MinInfJour,2,Minimum infirmiers equipe jour par fraction,Long
+CHK_MinInfNuit,1,Minimum infirmiers equipe nuit,Long
+CHK_IgnoreColor,15849925,Couleur cellule a ignorer (gris),Long
+CHK_InfFunctions,INF;IC,Fonctions considerees comme infirmier (separateur ;),Text
+FRAC_Matin_Start,7,Debut fraction Matin (heure decimale),Long
+FRAC_Matin_End,12,Fin fraction Matin,Long
+FRAC_AM_Start,12.5,Debut fraction Apres-midi (12h30),Double
+FRAC_AM_End,16.5,Fin fraction AM (16h30),Double
+FRAC_Soir_Start,16.5,Debut fraction Soir (16h30),Double
+FRAC_Soir_End,20,Fin fraction Soir,Long
+FRAC_MinHours_Full,3,Heures min pour presence complete (1),Long
+FRAC_MinHours_Half,1.5,Heures min pour demi-presence (0.5),Double
+SPECIAL_C19,7:00 11:30 15:30 19:00,Horaires C 19 (coupe),Text
+SPECIAL_C19SA,7:00 11:30 15:30 19:00,Horaires C 19 SA,Text
+SPECIAL_C19DI,7:00 11:30 15:30 19:00,Horaires C 19 DI,Text
+SPECIAL_C15,8:00 12:15 16:30 20:15,Horaires C 15 (coupe),Text
+SPECIAL_C15SA,8:00 12:15 16:30 20:15,Horaires C 15 SA,Text
+SPECIAL_C15DI,8:00 12:15 16:30 20:15,Horaires C 15 DI,Text
+SPECIAL_C20,8:00 12:00 16:00 20:00,Horaires C 20 (coupe),Text
+SPECIAL_C20E,8:00 11:30 15:30 20:00,Horaires C 20 E (coupe),Text
+SPECIAL_8301245163020:15,8:00 12:15 16:30 20:15,Variante C 15,Text
+DecalageLigneRemplacement,38,Decalage lignes pour remplacements (1=ligne 39),Long
+Couleur_ASBD_RGB,16777215,Couleur ASBD (blanc par defaut),Long
+CodesInfirmiere,*;INF;IDE;IC,Codes shifts infirmiere (separateur ;),Text
+Prefixe_JourFerie,JF;FERIE,Prefixes jours feries (separateur ;),Text
+CheminSauvegarde,C:\Users\{username}\Documents\DemandeRemplacements,Chemin sauvegarde demandes,Text
+OngletJoursFeries,Config_Calendrier,Nom onglet jours feries,Text
+CheminSauvegarde_Cloud,https://1drv.ms/f/c/ad31f9cd93996447/IgBUNZ4nfcWhRIV0dEpg9_h3AUrvPYmmjvBB6xGh42K9y58,Lien OneDrive partage demandes,Text
+REMPL_Couleur_Weekend,15773696,Couleur fond weekend (bleu clair),Long
+REMPL_Couleur_Ferie,255,Couleur fond jour ferie (rouge),Long
+REMPL_Couleur_Police_Weekend,16777215,Couleur police weekend (blanc),Long
+REMPL_Couleur_Police_Ferie,16777215,Couleur police ferie (blanc),Long
+PLN_Couleur_Weekend,15773696,Couleur fond weekend planning (bleu clair),Long
+PLN_Couleur_Ferie,255,Couleur fond ferie planning (rouge),Long
+PLN_Couleur_Police_Weekend,16777215,Couleur police WE planning (blanc),Long
+PLN_Couleur_Police_Ferie,16777215,Couleur police ferie planning (blanc),Long
+AnneePlanning,2026,Annee du planning pour PDFs,Long
+PDF_CheminParentRelatif,C.1 Admin & Team\1. Hot Topics\Horaire_2026\,Chemin relatif OneDrive vers dossiers PDF,Text
+PDF_Dossier_Jour,Planning Jour,Nom dossier PDF equipe Jour,Text
+PDF_Dossier_Nuit,Planning Nuit,Nom dossier PDF equipe Nuit,Text
+PDF_Archive_SousDossier_Jour,Archives,Sous-dossier archives Jour,Text
+PDF_Archive_SousDossier_Nuit,Archives,Sous-dossier archives Nuit,Text
+PDF_PrintArea_Jour,$A$1:$AG$60,Zone impression PDF Jour,Text
+PDF_PrintArea_Nuit,$A$1:$AG$73,Zone impression PDF Nuit,Text
+PDF_AlwaysLive,0,Forcer sauvegarde en Live (1=oui),Long
+PDF_BasePath_Override,,Chemin base override (vide=auto OneDrive),Text
+WhatsApp_Numero,,Numero WhatsApp notification (vide=desactive),Text

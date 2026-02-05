@@ -14,14 +14,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-Private Sub btnStartDate_Click()
-    ToggleDatePicker Me, Me.Controls("txtStartDate")
-End Sub
-
-Private Sub btnEndDate_Click()
-    ToggleDatePicker Me, Me.Controls("txtEndDate")
-End Sub
-
 Private Sub cmbNom_Change()
     Dim ws As Worksheet
     Dim i As Long
@@ -49,4 +41,5 @@ End Sub
 Private Sub UserForm_Initialize()
     FillEmployeeComboBoxes
 End Sub
+
 

@@ -20,24 +20,6 @@ Private Sub ComboBox3_Change()
     SetPlanningCellFromConfig "W13"
 End Sub
 
-Private Sub ComboBox4_Change()
-End Sub
-Private Sub CommandButton24_Click()
-UserForm5.Show
-End Sub
-
-Private Sub CommandButton25_Click()
-UserForm5.Show
-End Sub
-
-Private Sub CommandButton27_Click()
-Sheets("AIDE").Activate
-End Sub
-
-
-Private Sub ComboBox1_Change()
-End Sub
-
 Private Sub CommandButton1_Click()
 Sheets("PLANNING").Activate
 Selection.AutoFilter Field:=2, Criteria1:="REEL"
@@ -321,13 +303,8 @@ Private Sub CommandButton33_Click()
 Unload UserForm1
 End Sub
 
-Private Sub CommandButton31_Click()
-Call RAZPlanMens
-End Sub
-
 Private Sub CommandButton32_Click()
-Call GenererRoulement8SemJusqu31Dec_DynamiqueNuit
-
+Call GenererRoulementOptimise
 End Sub
 
 Private Sub CommandButton34_Click()
@@ -585,10 +562,8 @@ End Sub
 
 Private Sub CommandButton93_Click()
     ' Appelle la macro publique qui se trouve dans Module_Planning
-    Call UpdateDailyTotals_V2
+    Call Calculer_Totaux_Planning
 End Sub
-
-
 Private Sub CommandButton94_Click()
 ' Call the PasteToPlanning macro
     PasteToPlanning
@@ -618,12 +593,6 @@ Private Sub CommandButton99_Click()
 ' On appelle la procédure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7:30 16"
 End Sub
-
-Private Sub Frame2_Click()
-
-End Sub
-
-
 
 Private Function IsPlanningCell() As Boolean
     On Error Resume Next

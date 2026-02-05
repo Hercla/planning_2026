@@ -1,5 +1,5 @@
-Attribute VB_Name = "Module_ExportAllVBA"
 ' ExportedAt: 2026-01-12 15:37:09 | Workbook: Planning_2026.xlsm
+Attribute VB_Name = "Module_ExportAllVBA"
 Option Explicit
 
 ' ==========================
@@ -20,7 +20,7 @@ Public Sub Export_All_VBA_Modules_Stable()
 
     MsgBox _
         "CLASSEUR EXECUTANT LA MACRO :" & vbCrLf & ThisWorkbook.fullName & vbCrLf & vbCrLf & _
-        "ThisWorkbook.Path :" & vbCrLf & ThisWorkbook.path & vbCrLf & vbCrLf & _
+        "ThisWorkbook.Path :" & vbCrLf & ThisWorkbook.Path & vbCrLf & vbCrLf & _
         "DOSSIER EXPORT FINAL :" & vbCrLf & targetFolder, _
         vbInformation, "TRACE EXPORT VBA"
 
@@ -71,7 +71,7 @@ Private Sub ExportProjectComponents_Safe(ByVal targetFolder As String)
 EH_ACCESS:
     MsgBox _
         "? ACCÈS AU PROJET VBA REFUSÉ" & vbCrLf & vbCrLf & _
-        "Erreur " & Err.Number & " : " & Err.description & vbCrLf & vbCrLf & _
+        "Erreur " & Err.Number & " : " & Err.Description & vbCrLf & vbCrLf & _
         "? Solution :" & vbCrLf & _
         "Excel > Fichier > Options > Centre de gestion de la confidentialité >" & vbCrLf & _
         "Paramètres des macros > cocher :" & vbCrLf & _
@@ -120,7 +120,7 @@ Private Sub StampExportFiles(ByVal folderPath As String)
     For Each f In fso.GetFolder(folderPath).Files
         ext = LCase$(fso.GetExtensionName(f.Name))
         If ext = "bas" Or ext = "cls" Or ext = "frm" Or ext = "txt" Then
-            PrependStampToTextFile f.path
+            PrependStampToTextFile f.Path
         End If
     Next f
 End Sub
@@ -195,10 +195,10 @@ End Sub
 ' PATH RESOLUTION
 ' ==========================
 Private Function GetExportBaseFolder() As String
-    If IsUrlPath(ThisWorkbook.path) Or Len(ThisWorkbook.path) = 0 Then
+    If IsUrlPath(ThisWorkbook.Path) Or Len(ThisWorkbook.Path) = 0 Then
         GetExportBaseFolder = Environ$("USERPROFILE") & "\OneDrive\Bureau"
     Else
-        GetExportBaseFolder = ThisWorkbook.path
+        GetExportBaseFolder = ThisWorkbook.Path
     End If
 End Function
 

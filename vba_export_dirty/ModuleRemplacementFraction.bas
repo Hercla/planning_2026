@@ -44,8 +44,17 @@ Const SUGG_NUIT2 As Integer = 11     ' "20 7"
 ' Note:     Cette fonction délègue à la fonction centralisée dans modConfigRegles
 ' -----------------------------------------------------------------------------
 Public Function IsJourFerieOuRecup(code As String) As Boolean
-    ' Délégation à la fonction centralisée dans modConfigRegles
-    IsJourFerieOuRecup = EstJourFerieOuRecup(code)
+    ' Stub local en attendant modConfigRegles
+    Dim codesExclus As Variant
+    codesExclus = Array("JF", "F", "RF", "RH", "CA", "CT", "CSS", "MAL", "AM", "AT")
+    Dim i As Integer
+    For i = LBound(codesExclus) To UBound(codesExclus)
+        If StrComp(Trim(code), codesExclus(i), vbTextCompare) = 0 Then
+            IsJourFerieOuRecup = True
+            Exit Function
+        End If
+    Next i
+    IsJourFerieOuRecup = False
 End Function
 
 ' -----------------------------------------------------------------------------
@@ -125,9 +134,9 @@ End Function
 '   ws:      La feuille de calcul à traiter
 '   debug:   Si True, affiche des informations de débogage
 ' -----------------------------------------------------------------------------
-Public Sub TraiterUneFeuilleDeMois(ws As Worksheet, Optional debug As Boolean = False)
+Public Sub TraiterUneFeuilleDeMois(ws As Worksheet, Optional debugMode As Boolean = False)
     ' Déléguer à la version qui utilise les règles de configuration
-    TraiterUneFeuilleDeMois_ParRegles ws, debug
+    TraiterUneFeuilleDeMois_ParRegles ws, debugMode
 End Function
 
 ' -----------------------------------------------------------------------------
@@ -137,7 +146,7 @@ End Function
 '   ws:      La feuille de calcul à traiter
 '   debug:   Si True, affiche des informations de débogage
 ' -----------------------------------------------------------------------------
-Public Sub TraiterUneFeuilleDeMois_ParRegles(ws As Worksheet, Optional debug As Boolean = False)
+Public Sub TraiterUneFeuilleDeMois_ParRegles(ws As Worksheet, Optional debugMode As Boolean = False)
     Dim nbLignes As Long, nbJours As Integer
     Dim row As Long, col As Integer
     Dim cellule As Range
@@ -247,12 +256,12 @@ Public Sub TraiterUneFeuilleDeMois_ParRegles(ws As Worksheet, Optional debug As 
         ' Si des manques sont détectés, suggérer des remplacements
         If manqueMatin > 0 Or manquePM > 0 Or manqueSoir > 0 Then
             ' Appeler la fonction d'analyse et de remplacement
-            AnalyseEtRemplacementPlanningUltraOptimise ws, col, manqueMatin, manquePM, manqueSoir, debug
+            AnalyseEtRemplacementPlanningUltraOptimise ws, col, manqueMatin, manquePM, manqueSoir, debugMode
         End If
     Next col
     
     ' Afficher un résumé si en mode debug
-    If debug Then
+    If debugMode Then
         Dim msg As String
         msg = "Traitement terminé pour la feuille " & ws.Name & vbCrLf
         msg = msg & "Nombre de jours analysés: " & nbJours & vbCrLf
@@ -396,7 +405,7 @@ End Function
 ' -----------------------------------------------------------------------------
 Public Sub AnalyseEtRemplacementPlanningUltraOptimise(ws As Worksheet, colJour As Integer, _
                                                     manqueMatin As Long, manquePM As Long, manqueSoir As Long, _
-                                                    Optional debug As Boolean = False)
+                                                    Optional debugMode As Boolean = False)
     Dim row As Long, lastRow As Long
     Dim codesSuggestion() As Variant
     Dim groupesExclusifs() As Variant
@@ -467,7 +476,7 @@ Public Sub AnalyseEtRemplacementPlanningUltraOptimise(ws As Worksheet, colJour A
     
     ' Si aucune ligne libre, sortir
     If nbLignesLibres = 0 Then
-        If debug Then MsgBox "Aucune ligne libre trouvée pour le " & nomJour & " " & Day(dateJour) & "/" & Month(dateJour), vbInformation
+        If debugMode Then MsgBox "Aucune ligne libre trouvée pour le " & nomJour & " " & Day(dateJour) & "/" & Month(dateJour), vbInformation
         Exit Function
     End If
     
@@ -479,23 +488,23 @@ Public Sub AnalyseEtRemplacementPlanningUltraOptimise(ws As Worksheet, colJour A
     Call InitialiserReglesDeRemplacement
     
     ' Appliquer les règles de remplacement
-    suggestionFaite = AppliquerReglesRemplacement(ws, colJour, manqueMatin, manquePM, manqueSoir, lignesLibres, nbLignesLibres, nbSuggestions, debug)
+    suggestionFaite = AppliquerReglesRemplacement(ws, colJour, manqueMatin, manquePM, manqueSoir, lignesLibres, nbLignesLibres, nbSuggestions, debugMode)
     
     ' Si aucune suggestion n'a été faite par les règles, utiliser l'approche par défaut
     If Not suggestionFaite And nbSuggestions = 0 Then
         ' Traiter les manques de nuit en priorité
         If manqueSoir > 0 Then
-            suggestionFaite = SuggererRemplacementsNuit(ws, colJour, manqueSoir, lignesLibres, nbLignesLibres, nbSuggestions, debug)
+            suggestionFaite = SuggererRemplacementsNuit(ws, colJour, manqueSoir, lignesLibres, nbLignesLibres, nbSuggestions, debugMode)
         End If
         
         ' Traiter les manques de matin et après-midi
         If manqueMatin > 0 Or manquePM > 0 Then
-            suggestionFaite = SuggererRemplacementsJour(ws, colJour, manqueMatin, manquePM, lignesLibres, nbLignesLibres, nbSuggestions, debug)
+            suggestionFaite = SuggererRemplacementsJour(ws, colJour, manqueMatin, manquePM, lignesLibres, nbLignesLibres, nbSuggestions, debugMode)
         End If
     End If
     
     ' Afficher un résumé si en mode debug
-    If debug Then
+    If debugMode Then
         Dim msg As String
         msg = "Analyse pour le " & nomJour & " " & Day(dateJour) & "/" & Month(dateJour) & vbCrLf
         msg = msg & "Manque Matin: " & manqueMatin & vbCrLf
@@ -524,7 +533,7 @@ End Function
 Private Function AppliquerReglesRemplacement(ws As Worksheet, colJour As Integer, _
                                            manqueMatin As Long, manquePM As Long, manqueSoir As Long, _
                                            lignesLibres() As Long, nbLignesLibres As Integer, _
-                                           ByRef nbSuggestions As Integer, Optional debug As Boolean = False) As Boolean
+                                           ByRef nbSuggestions As Integer, Optional debugMode As Boolean = False) As Boolean
     Dim i As Integer, j As Integer, k As Integer
     Dim regleAppliquee As Boolean
     Dim codeApplique As Boolean
@@ -644,7 +653,7 @@ End Function
 Private Function SuggererRemplacementsNuit(ws As Worksheet, colJour As Integer, _
                                          manqueSoir As Long, lignesLibres() As Long, _
                                          ByRef nbLignesLibres As Integer, ByRef nbSuggestions As Integer, _
-                                         Optional debug As Boolean = False) As Boolean
+                                         Optional debugMode As Boolean = False) As Boolean
     Dim i As Integer
     Dim suggestionsFaites As Integer
     Dim codeNuit As String
@@ -708,7 +717,7 @@ End Function
 Private Function SuggererRemplacementsJour(ws As Worksheet, colJour As Integer, _
                                          manqueMatin As Long, manquePM As Long, _
                                          lignesLibres() As Long, ByRef nbLignesLibres As Integer, _
-                                         ByRef nbSuggestions As Integer, Optional debug As Boolean = False) As Boolean
+                                         ByRef nbSuggestions As Integer, Optional debugMode As Boolean = False) As Boolean
     Dim i As Integer
     Dim suggestionsFaites As Integer
     Dim code As String

@@ -2,6 +2,9 @@ Attribute VB_Name = "Module_Remplacements_Premium"
 ' ExportedAt: 2026-01-13 14:15:00 | Workbook: Planning_2026.xlsm
 Option Explicit
 
+Private Const COL_FIRST_DAY As Long = 3   ' Colonne C
+Private Const COL_LAST_DAY As Long = 33   ' Colonne AG
+Private Const ROW_START_DATES As Long = 7 ' Premiere ligne des dates dans le modele
 '================================================================================================
 '  CONFIG ACCESS (LOCAL, NO DEPENDENCIES)
 '  Source: Sheet "Feuil_Config" (A=Key, B=Value)
@@ -75,9 +78,6 @@ End Function
 ' ===================================================================================
 
 ' --- Constantes pour lisibilite ---
-Private Const COL_FIRST_DAY As Long = 3   ' Colonne C
-Private Const COL_LAST_DAY As Long = 33   ' Colonne AG
-Private Const ROW_START_DATES As Long = 7 ' Premiere ligne des dates dans le modele
 
 ' ===================================================================================
 ' MACRO PRINCIPALE
@@ -897,3 +897,4 @@ Private Function EnsureFolderExists(fullPath As String) As Boolean
 FailSafe:
     EnsureFolderExists = False
 End Function
+

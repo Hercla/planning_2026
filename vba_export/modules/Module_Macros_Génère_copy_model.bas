@@ -109,13 +109,11 @@ Sub UpdateF3()
     ws.Activate
                         
 End Sub
-Option Explicit
-
-Private Sub Worksheet_Change(ByVal Target As Range)
+Private Sub Worksheet_Change(ByVal target As Range)
     On Error GoTo ErrorHandler
     
     ' Vérifie si la modification a eu lieu dans la cellule F3
-    If Not Intersect(Target, Me.Range("F3")) Is Nothing Then
+    If Not Intersect(target, Me.Range("F3")) Is Nothing Then
         ' Désactive les événements pour éviter les appels récursifs
         Application.EnableEvents = False
         Call Remplir_dates

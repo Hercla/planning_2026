@@ -50,7 +50,13 @@ Private Sub ApplyMode(mode As ViewMode)
     
     ' 3) Parse and hide each block
     If Len(hideBlocks) > 0 Then
-        parts = Split(hideBlocks, "|")
+        ' Feuil_Config stores blocks with ';' (ex: "5:5;31:39")
+        ' Keep "|" fallback for legacy files.
+        If InStr(1, hideBlocks, ";", vbTextCompare) > 0 Then
+            parts = Split(hideBlocks, ";")
+        Else
+            parts = Split(hideBlocks, "|")
+        End If
         For i = LBound(parts) To UBound(parts)
             If Len(Trim$(parts(i))) > 0 Then
                 blockParts = Split(Trim$(parts(i)), ":")

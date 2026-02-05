@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Option Explicit
 
-Private Sub Worksheet_Change(ByVal Target As Range)
+Private Sub Worksheet_Change(ByVal target As Range)
     On Error GoTo SafeExit
     
     Dim lo As ListObject
@@ -22,7 +22,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     
     If Not lo Is Nothing Then
         Set rngTable = lo.Range
-        If Not Intersect(Target, rngTable) Is Nothing Then
+        If Not Intersect(target, rngTable) Is Nothing Then
             CFG_OnChange_RequestViewApply
             GoTo SafeExit
         End If

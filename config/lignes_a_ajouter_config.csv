@@ -1,0 +1,12 @@
+Cle;Valeur;Type;Description
+CALC_ROW_Matin;60;Long;Ligne Total Matin
+CALC_ROW_AM;61;Long;Ligne Total AM
+CALC_ROW_Soir;62;Long;Ligne Total Soir
+CALC_ROW_Nuit;63;Long;Ligne Total Nuit
+CALC_ROW_P_0645;64;Long;Ligne Présence 06H45
+CALC_ROW_P_7H8H;65;Long;Ligne Présence 7H-8H
+CALC_ROW_P_8H1630;66;Long;Ligne Présence 8H-16H30
+CALC_ROW_C15;67;Long;Ligne Code C15
+CALC_ROW_C20;68;Long;Ligne Code C20
+CALC_ROW_C20E;69;Long;Ligne Code C20E
+CALC_ROW_C19;70;Long;Ligne Code C19
