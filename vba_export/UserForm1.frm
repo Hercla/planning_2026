@@ -23,11 +23,11 @@ End Sub
 Private Sub ComboBox4_Change()
 End Sub
 Private Sub CommandButton24_Click()
-'UserForm5.Show ' DÉSACTIVÉ - form inexistant
+'UserForm5.Show ' Dï¿½SACTIVï¿½ - form inexistant
 End Sub
 
 Private Sub CommandButton25_Click()
-'UserForm5.Show ' DÉSACTIVÉ - form inexistant
+'UserForm5.Show ' Dï¿½SACTIVï¿½ - form inexistant
 End Sub
 
 Private Sub CommandButton27_Click()
@@ -107,13 +107,13 @@ On Error GoTo ErrHandler
     Application.EnableEvents = False
     Application.Calculation = xlCalculationManual
 
-    ' 1) Génère jours + numéros + couleurs sur Janv..Dec
+    ' 1) Gï¿½nï¿½re jours + numï¿½ros + couleurs sur Janv..Dec
     Call GenerateurCalendrier.GenererDatesEtJoursPourTousLesMois
 
-    ' 2) Met à jour Config_Codes (F/R + heures) selon Feuil_Config!B2
+    ' 2) Met ï¿½ jour Config_Codes (F/R + heures) selon Feuil_Config!B2
     Call MettreAJourConfigurationCodes
 
-    MsgBox "MAJ DATES terminée : calendriers + fériés (F/R) + heures codes.", vbInformation
+    MsgBox "MAJ DATES terminï¿½e : calendriers + fï¿½riï¿½s (F/R) + heures codes.", vbInformation
     GoTo CleanExit
 
 ErrHandler:
@@ -132,47 +132,47 @@ Module_UserActions.InsertCodeFromUserForm "CTR"
 End Sub
 
 Private Sub CommandButton103_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "14 20"
 End Sub
 
 Private Sub CommandButton104_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "13 19"
 End Sub
 
 Private Sub CommandButton105_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "12:30 16:30"
 End Sub
 
 Private Sub CommandButton107_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "10 19"
 End Sub
 
 Private Sub CommandButton108_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "9 15:30"
 End Sub
 
 Private Sub CommandButton109_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "8 16:30"
 End Sub
 
 Private Sub CommandButton110_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "8 14"
 End Sub
 
 Private Sub CommandButton111_Click()
-'place un astérix si besoin inf niveau du code
+'place un astï¿½rix si besoin inf niveau du code
 Call ToggleAsterisqueCellule
 End Sub
 
 Private Sub CommandButton112_Click()
-'met la couleur vert foncé code hrel
+'met la couleur vert foncï¿½ code hrel
 Call ToggleColorierCelluleVertFonce
 End Sub
 
@@ -181,39 +181,39 @@ Private Sub CommandButton113_Click()
 End Sub
 
 Private Sub CommandButton114_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 15 di"
 End Sub
 
 Private Sub CommandButton115_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 15"
 End Sub
 
 Private Sub CommandButton116_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 20"
 End Sub
 
 Private Sub CommandButton117_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 19 di"
 End Sub
 
 Private Sub CommandButton118_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 19"
 End Sub
 
 Private Sub CommandButton119_Click()
 ' masquer toutes les lignes de "43:50" en premier lieu. Ensuite, la boucle parcourt chaque ligne et la
-'rend visible seulement si elle est vide et que le nombre de lignes visibles est inférieur au nombre demandé.
+'rend visible seulement si elle est vide et que le nombre de lignes visibles est infï¿½rieur au nombre demandï¿½.
 Call AfficherMasquerLignesDynamiques
 
 End Sub
 
 Private Sub CommandButton120_Click()
-    ' Afficher le UserForm pour la mise à jour des lignes
+    ' Afficher le UserForm pour la mise ï¿½ jour des lignes
     Call MajLigne
 End Sub
 
@@ -249,10 +249,6 @@ End Sub
 Private Sub CommandButton130_Click()
 Call UpdateMonthlySheets_Final_Polished
 
-End Sub
-
-Private Sub CommandButton131_Click()
-Call Check_Presence_Infirmiers
 End Sub
 
 Private Sub CommandButton132_Click()
@@ -327,7 +323,7 @@ Unload UserForm1
 End Sub
 
 Private Sub CommandButton31_Click()
-    ' Call RAZPlanMens  ' DÉSACTIVÉ - proc supprimée
+    ' Call RAZPlanMens  ' Dï¿½SACTIVï¿½ - proc supprimï¿½e
 End Sub
 
 Private Sub CommandButton32_Click()
@@ -399,121 +395,121 @@ Private Sub CommandButton47_Click()
     Module_UserActions.NavigateToSheet "Juillet"
 End Sub
 Private Sub CommandButton48_Click() ' Le bouton pour "6:45 12:45"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "6:45 12:45"
 End Sub
 
 Private Sub CommandButton49_Click() ' Le bouton pour "6:45 15:15"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "6:45 15:15"
 End Sub
 Private Sub CommandButton50_Click() ' Le bouton pour "7 15:30"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7 15:30"
 End Sub
 
 Private Sub CommandButton52_Click() ' Le bouton pour "8 16:30"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "8 16:30"
 End Sub
 
 Private Sub CommandButton53_Click() ' Le bouton pour "7 13"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7 13"
 End Sub
 
 Private Sub CommandButton55_Click() ' Le bouton pour "9 15:30"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "9 15:30"
 End Sub
 
 Private Sub CommandButton56_Click() ' Le bouton pour "10 20"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "10 20"
 End Sub
 
 Private Sub CommandButton57_Click() ' Le bouton pour "13 19"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "13 19"
 End Sub
 
 Private Sub CommandButton58_Click() ' Le bouton pour "14 20"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "14 20"
 End Sub
 
 Private Sub CommandButton60_Click() ' Le bouton pour "7:15 13:15"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7:15 13:15"
 End Sub
 Private Sub CommandButton61_Click() ' Le bouton pour "C 19"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 19"
 End Sub
 
 Private Sub CommandButton62_Click() ' Le bouton pour "C 19 di"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 19 di"
 End Sub
 
 Private Sub CommandButton63_Click() ' Le bouton pour "C 20"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 20"
 End Sub
 
 Private Sub CommandButton64_Click() ' Le bouton pour "C 15"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 15"
 End Sub
 
 Private Sub CommandButton65_Click() ' Le bouton pour "C 15 di"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "C 15 di"
 End Sub
 
 Private Sub CommandButton66_Click() ' Le bouton pour "19:45 06:45"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "19:45 06:45"
 End Sub
 
 Private Sub CommandButton67_Click() ' Le bouton pour "20 7"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "20 7"
 End Sub
 
 Private Sub CommandButton69_Click() ' Le bouton pour "20 7"
 'Sub bouton_Rhs 8h
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "20 7"
 End Sub
 
 Private Sub CommandButton70_Click() ' Le bouton pour "20 7"
 'Sub bouton_CSOC
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "20 7"
 End Sub
 
 Private Sub CommandButton71_Click() ' Le bouton pour "20 7"
 'Sub bouton_CSOC
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "20 7"
 End Sub
 
 Private Sub CommandButton72_Click() ' Le bouton pour "7:15 15:45"
 'Sub bouton_21()7:15 15:45
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7:15 15:45"
 End Sub
 
 Private Sub CommandButton73_Click() ' Le bouton pour "4/5*"
 'Sub bouton_23()"4/5*"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "4/5*"
 End Sub
 
 Private Sub CommandButton74_Click() ' Le bouton pour "3/4*"
 'Sub bouton_22()"3/4*"
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "3/4*"
 End Sub
 
@@ -581,7 +577,7 @@ End Sub
 
 Public Sub CommandButton91_Click()
 Call Mode_Nuit
-ActiveWindow.Zoom = 70 'Réglage de zoom
+ActiveWindow.Zoom = 70 'Rï¿½glage de zoom
 End Sub
 
     Private Sub CommandButtonJour_Click()
@@ -618,13 +614,13 @@ Call ToggleColorierCelluleBleuClair
 End Sub
 
 Private Sub CommandButton98_Click()
-'place un astérix si besoin inf niveau du code
+'place un astï¿½rix si besoin inf niveau du code
 Call ToggleAsterisqueCellule
 
 End Sub
 
 Private Sub CommandButton99_Click()
-' On appelle la procédure publique et on lui passe le code
+' On appelle la procï¿½dure publique et on lui passe le code
     Module_UserActions.InsertCodeFromUserForm "7:30 16"
 End Sub
 
@@ -673,7 +669,7 @@ End Sub
 Private Sub UserForm_Click()
 Me.width = 256.55 ' Ajustez la largeur selon vos besoins
 End Sub
-' --- AJOUTEZ CETTE PROCÉDURE DANS LE CODE DU USERFORM "Menu" ---
+' --- AJOUTEZ CETTE PROCï¿½DURE DANS LE CODE DU USERFORM "Menu" ---
 Private Sub InsertCodeAndMove(ByVal code As String)
     If Intersect(ActiveCell, Range("planning")) Is Nothing Then Exit Sub
     
