@@ -157,7 +157,7 @@ Function ChoisirCodePertinent(codesPossibles As Variant, planningArr As Variant,
     ChoisirCodePertinent = bestCode
 End Function
 
-Sub MettreAJourCompteursMAS(codePlace As String, ByRef actualMatin As Long, ByRef actualPM As Long, ByRef actualSoir As Long, ByVal ligneEnCours As Long, ByRef presence7_8h_compteur As Long)
+Sub MettreAJourCompteursMAS(ByVal codePlace As String, ByRef actualMatin As Long, ByRef actualPM As Long, ByRef actualSoir As Long, ByVal ligneEnCours As Long, ByRef presence7_8h_compteur As Long)
     Select Case codePlace
         Case "6:45 15:15", "7 15:30", "7 13", "7 11:30"
             actualMatin = actualMatin + 1
