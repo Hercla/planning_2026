@@ -559,7 +559,7 @@ NextPerson:
             jourRouge = True
         End If
         
-        ' === METEO + ACTION - DESIGN DALTONIEN 9/10 ===
+        ' === METEO + ACTION - ALERTES CLAIRES ===
         Dim nbAlertes As Long
         nbAlertes = 0
         If totEtage(1) < effPrevu(1) Then nbAlertes = nbAlertes + 1
@@ -568,35 +568,34 @@ NextPerson:
         If totEtage(4) < effPrevu(4) Then nbAlertes = nbAlertes + 1
 
         With ws.Cells(rMeteo, col)
-            .Font.Size = 16
+            .Font.Size = 18
             .HorizontalAlignment = xlCenter
             .Interior.ColorIndex = xlNone
             If jourRouge Or nbAlertes >= 2 Then
-                .value = ChrW(&H26C8)  ' ⛈ Orage = critique
+                .value = ChrW(&H26A0)  ' ⚠ Warning triangle
+                .Font.Color = RGB(255, 0, 0)  ' Rouge
             ElseIf nbAlertes = 1 Then
-                .value = ChrW(&H26C5)  ' ⛅ Nuageux = attention
+                .value = ChrW(&H26A0)  ' ⚠
+                .Font.Color = RGB(237, 125, 49)  ' Orange
             Else
-                .value = ChrW(&H2600)  ' ☀ Soleil = OK
+                .value = ""  ' Vide si OK
             End If
         End With
 
-        ' ACTION
+        ' ACTION - UNIQUEMENT si alerte
         Const COLOR_CRIT As Long = 1710618  ' Noir
-        Const COLOR_NEUT As Long = 15790320 ' Gris clair
 
         With ws.Cells(rAction, col)
-            .Font.Size = 9
-            .Font.Bold = True
             .HorizontalAlignment = xlCenter
+            .Interior.ColorIndex = xlNone
             If jourRouge Then
                 .value = "APPEL"
                 .Interior.Color = COLOR_CRIT
                 .Font.Color = vbWhite
+                .Font.Size = 9
+                .Font.Bold = True
             Else
-                .value = "-"
-                .Interior.Color = COLOR_NEUT
-                .Font.Color = RGB(150, 150, 150)
-                .Font.Bold = False
+                .value = ""  ' Vide si OK
             End If
         End With
     Next col
@@ -939,9 +938,8 @@ Private Sub DetectSpecialCodes(h1 As Double, f1 As Double, h2 As Double, f2 As D
 End Sub
 
 Private Sub DrawDeltaFast(rng As Range, delta As Double, isCritical As Boolean, fontName As String, fontSize As Long, totVal As Double)
-    ' === DESIGN DALTONIEN 9/10 ===
-    ' Bleu = OK, Orange = Attention, Noir = Critique
-    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
+    ' === DESIGN DALTONIEN - ALERTES CLAIRES ===
+    ' Fond colore UNIQUEMENT pour alertes, sinon discret
     Const COLOR_WARN As Long = 3243757     ' #ED7D31 Orange
     Const COLOR_CRIT As Long = 1710618     ' #1A1A1A Noir
 
@@ -950,7 +948,7 @@ Private Sub DrawDeltaFast(rng As Range, delta As Double, isCritical As Boolean, 
         .Font.Name = fontName
         .Font.Size = fontSize
         .HorizontalAlignment = xlCenter
-        .Font.Bold = True
+        .Interior.ColorIndex = xlNone  ' Reset fond
 
         If isCritical Then
             ' Ligne 7h-8h critique: symboles
@@ -958,33 +956,35 @@ Private Sub DrawDeltaFast(rng As Range, delta As Double, isCritical As Boolean, 
                 .value = ChrW(&H2717)  ' ✗
                 .Interior.Color = COLOR_CRIT
                 .Font.Color = vbWhite
+                .Font.Bold = True
             Else
                 .value = ChrW(&H2713)  ' ✓
-                .Interior.Color = COLOR_OK
-                .Font.Color = vbWhite
+                .Font.Color = RGB(0, 128, 0)  ' Vert fonce
+                .Font.Bold = True
             End If
         Else
-            ' Lignes ecarts normales: chiffres
+            ' Lignes ecarts normales
             If delta < -1 Then
-                ' Critique: -2 ou pire
+                ' CRITIQUE: -2 ou pire = NOIR
                 .value = delta
                 .Interior.Color = COLOR_CRIT
                 .Font.Color = vbWhite
+                .Font.Bold = True
             ElseIf delta < 0 Then
-                ' Attention: -1
+                ' ATTENTION: -1 = ORANGE
                 .value = delta
                 .Interior.Color = COLOR_WARN
                 .Font.Color = vbWhite
+                .Font.Bold = True
             ElseIf delta > 0 Then
-                ' Bon: positif
+                ' OK positif = juste texte vert
                 .value = "+" & delta
-                .Interior.Color = COLOR_OK
-                .Font.Color = vbWhite
+                .Font.Color = RGB(0, 128, 0)
+                .Font.Bold = False
             Else
-                ' Neutre: 0
+                ' Neutre: 0 = texte gris discret
                 .value = "0"
-                .Interior.Color = COLOR_OK
-                .Font.Color = vbWhite
+                .Font.Color = RGB(180, 180, 180)
                 .Font.Bold = False
             End If
         End If
@@ -1024,33 +1024,27 @@ Private Sub WriteEtageINFCell(rng As Range, totalEtage As Double, totalINF As Do
 End Sub
 
 Private Sub WriteValueCell(rng As Range, val As Double, fontName As String, fontSize As Long)
-    ' === DESIGN DALTONIEN 9/10 ===
-    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
-    Const COLOR_NEUT As Long = 15790320    ' #F0F0F0 Gris clair
-
+    ' === DESIGN ALERTES CLAIRES - Valeurs discretes ===
     With rng
         .NumberFormat = "General"
         .Font.Name = fontName
         .Font.Size = 14
         .HorizontalAlignment = xlCenter
-        .Font.Bold = True
+        .Interior.ColorIndex = xlNone  ' Pas de fond
 
         If val > 0 Then
             .value = val
-            .Interior.Color = COLOR_OK
-            .Font.Color = vbWhite
+            .Font.Color = RGB(68, 114, 196)  ' Bleu texte
+            .Font.Bold = True
         Else
-            .value = "-"
-            .Interior.Color = COLOR_NEUT
-            .Font.Color = RGB(150, 150, 150)
+            .value = ""  ' Vide, pas de "-"
             .Font.Bold = False
         End If
     End With
 End Sub
 
 Private Sub WriteCheckCell(rng As Range, val As Double, req As Long, fontName As String, fontOk As Long, fontAlert As Long, ByRef jourRouge As Boolean)
-    ' === DESIGN DALTONIEN 9/10 ===
-    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
+    ' === DESIGN ALERTES CLAIRES ===
     Const COLOR_CRIT As Long = 1710618     ' #1A1A1A Noir
 
     With rng
@@ -1058,24 +1052,26 @@ Private Sub WriteCheckCell(rng As Range, val As Double, req As Long, fontName As
         .Font.Name = fontName
         .Font.Size = 14
         .HorizontalAlignment = xlCenter
-        .Font.Bold = True
+        .Interior.ColorIndex = xlNone  ' Reset
 
         If val >= req Then
-            ' OK
+            ' OK = texte bleu discret, pas de fond
             .value = val
-            .Interior.Color = COLOR_OK
-            .Font.Color = vbWhite
+            .Font.Color = RGB(68, 114, 196)
+            .Font.Bold = True
         ElseIf val > 0 Then
-            ' Insuffisant mais pas zero
+            ' Insuffisant = NOIR
             .value = val
             .Interior.Color = COLOR_CRIT
             .Font.Color = vbWhite
+            .Font.Bold = True
             jourRouge = True
         Else
-            ' Zero = critique
+            ' Zero = NOIR avec X
             .value = ChrW(&H2717)  ' ✗
             .Interior.Color = COLOR_CRIT
             .Font.Color = vbWhite
+            .Font.Bold = True
             jourRouge = True
         End If
     End With
