@@ -559,22 +559,46 @@ NextPerson:
             jourRouge = True
         End If
         
-        ' Meteo + Action
+        ' === METEO + ACTION - DESIGN DALTONIEN 9/10 ===
+        Dim nbAlertes As Long
+        nbAlertes = 0
+        If totEtage(1) < effPrevu(1) Then nbAlertes = nbAlertes + 1
+        If totEtage(2) < effPrevu(2) Then nbAlertes = nbAlertes + 1
+        If totEtage(3) < effPrevu(3) Then nbAlertes = nbAlertes + 1
+        If totEtage(4) < effPrevu(4) Then nbAlertes = nbAlertes + 1
+
         With ws.Cells(rMeteo, col)
-            If jourRouge Then .value = ChrW(&H26A0): .Font.Color = vbRed Else .value = ""
+            .Font.Size = 16
             .HorizontalAlignment = xlCenter
+            .Interior.ColorIndex = xlNone
+            If jourRouge Or nbAlertes >= 2 Then
+                .value = ChrW(&H26C8)  ' ⛈ Orage = critique
+            ElseIf nbAlertes = 1 Then
+                .value = ChrW(&H26C5)  ' ⛅ Nuageux = attention
+            Else
+                .value = ChrW(&H2600)  ' ☀ Soleil = OK
+            End If
         End With
-        
-        If jourRouge Then
-            With ws.Cells(rAction, col)
+
+        ' ACTION
+        Const COLOR_CRIT As Long = 1710618  ' Noir
+        Const COLOR_NEUT As Long = 15790320 ' Gris clair
+
+        With ws.Cells(rAction, col)
+            .Font.Size = 9
+            .Font.Bold = True
+            .HorizontalAlignment = xlCenter
+            If jourRouge Then
                 .value = "APPEL"
-                .Interior.Color = vbBlack
+                .Interior.Color = COLOR_CRIT
                 .Font.Color = vbWhite
-                .Font.Bold = True
-                .Font.Size = 8
-                .HorizontalAlignment = xlCenter
-            End With
-        End If
+            Else
+                .value = "-"
+                .Interior.Color = COLOR_NEUT
+                .Font.Color = RGB(150, 150, 150)
+                .Font.Bold = False
+            End If
+        End With
     Next col
 
     ' === LABELS COCKPIT ===
@@ -915,27 +939,54 @@ Private Sub DetectSpecialCodes(h1 As Double, f1 As Double, h2 As Double, f2 As D
 End Sub
 
 Private Sub DrawDeltaFast(rng As Range, delta As Double, isCritical As Boolean, fontName As String, fontSize As Long, totVal As Double)
+    ' === DESIGN DALTONIEN 9/10 ===
+    ' Bleu = OK, Orange = Attention, Noir = Critique
+    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
+    Const COLOR_WARN As Long = 3243757     ' #ED7D31 Orange
+    Const COLOR_CRIT As Long = 1710618     ' #1A1A1A Noir
+
     With rng
         .NumberFormat = "General"
         .Font.Name = fontName
         .Font.Size = fontSize
         .HorizontalAlignment = xlCenter
-        If delta < 0 Then
-            If isCritical Then
-                .value = "!" & delta
-                .Interior.Color = RGB(255, 0, 0)
+        .Font.Bold = True
+
+        If isCritical Then
+            ' Ligne 7h-8h critique: symboles
+            If delta < 0 Then
+                .value = ChrW(&H2717)  ' ✗
+                .Interior.Color = COLOR_CRIT
                 .Font.Color = vbWhite
             Else
-                .value = delta
-                .Interior.Color = RGB(255, 200, 200)
-                .Font.Color = RGB(200, 0, 0)
+                .value = ChrW(&H2713)  ' ✓
+                .Interior.Color = COLOR_OK
+                .Font.Color = vbWhite
             End If
-            .Font.Bold = True
         Else
-            .value = IIf(totVal > 0, totVal, "")
-            .Font.Bold = False
-            .Font.Color = RGB(160, 160, 160)
-            .Interior.ColorIndex = xlNone
+            ' Lignes ecarts normales: chiffres
+            If delta < -1 Then
+                ' Critique: -2 ou pire
+                .value = delta
+                .Interior.Color = COLOR_CRIT
+                .Font.Color = vbWhite
+            ElseIf delta < 0 Then
+                ' Attention: -1
+                .value = delta
+                .Interior.Color = COLOR_WARN
+                .Font.Color = vbWhite
+            ElseIf delta > 0 Then
+                ' Bon: positif
+                .value = "+" & delta
+                .Interior.Color = COLOR_OK
+                .Font.Color = vbWhite
+            Else
+                ' Neutre: 0
+                .value = "0"
+                .Interior.Color = COLOR_OK
+                .Font.Color = vbWhite
+                .Font.Bold = False
+            End If
         End If
     End With
 End Sub
@@ -973,48 +1024,82 @@ Private Sub WriteEtageINFCell(rng As Range, totalEtage As Double, totalINF As Do
 End Sub
 
 Private Sub WriteValueCell(rng As Range, val As Double, fontName As String, fontSize As Long)
+    ' === DESIGN DALTONIEN 9/10 ===
+    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
+    Const COLOR_NEUT As Long = 15790320    ' #F0F0F0 Gris clair
+
     With rng
         .NumberFormat = "General"
         .Font.Name = fontName
-        .Font.Size = 16
+        .Font.Size = 14
         .HorizontalAlignment = xlCenter
+        .Font.Bold = True
+
         If val > 0 Then
             .value = val
+            .Interior.Color = COLOR_OK
+            .Font.Color = vbWhite
         Else
-            .value = ""
+            .value = "-"
+            .Interior.Color = COLOR_NEUT
+            .Font.Color = RGB(150, 150, 150)
+            .Font.Bold = False
         End If
     End With
 End Sub
 
 Private Sub WriteCheckCell(rng As Range, val As Double, req As Long, fontName As String, fontOk As Long, fontAlert As Long, ByRef jourRouge As Boolean)
+    ' === DESIGN DALTONIEN 9/10 ===
+    Const COLOR_OK As Long = 4485828       ' #4472C4 Bleu
+    Const COLOR_CRIT As Long = 1710618     ' #1A1A1A Noir
+
     With rng
         .NumberFormat = "General"
         .Font.Name = fontName
+        .Font.Size = 14
         .HorizontalAlignment = xlCenter
-        If val > 0 Then
+        .Font.Bold = True
+
+        If val >= req Then
+            ' OK
             .value = val
-            .Font.Size = 16
+            .Interior.Color = COLOR_OK
+            .Font.Color = vbWhite
+        ElseIf val > 0 Then
+            ' Insuffisant mais pas zero
+            .value = val
+            .Interior.Color = COLOR_CRIT
+            .Font.Color = vbWhite
+            jourRouge = True
         Else
-            .value = ""
-            .Font.Size = 16
-        End If
-        If val < req Then
-            .Interior.Color = RGB(255, 200, 150)
-            If val = 0 Then
-                .value = "MANQUE"
-                .Font.Size = 9
-            End If
+            ' Zero = critique
+            .value = ChrW(&H2717)  ' ✗
+            .Interior.Color = COLOR_CRIT
+            .Font.Color = vbWhite
             jourRouge = True
         End If
     End With
 End Sub
 
 Private Sub WriteAlertCell(rng As Range, txt As String, fontName As String, fontSize As Long)
+    ' === DESIGN DALTONIEN 9/10 ===
+    Const COLOR_CRIT As Long = 1710618     ' #1A1A1A Noir
+
     With rng
-        .value = txt
-        .Interior.Color = RGB(255, 200, 150)
-        .Font.Size = 9
+        ' Convertir textes longs en symboles
+        Select Case UCase(txt)
+            Case "MANQUE", "MANQUE C20", "MANQUE C20E"
+                .value = ChrW(&H2717)  ' ✗
+            Case "C15 INTERDIT"
+                .value = ChrW(&H26D4)  ' ⛔
+            Case Else
+                .value = ChrW(&H2717)  ' ✗ par defaut
+        End Select
+        .Interior.Color = COLOR_CRIT
+        .Font.Color = vbWhite
+        .Font.Size = 14
         .Font.Name = fontName
+        .Font.Bold = True
         .HorizontalAlignment = xlCenter
     End With
 End Sub
@@ -1056,28 +1141,29 @@ Private Sub ApplyLabelsFast(ws As Worksheet, lig1 As Long, lig2 As Long, lig3 As
     labelFontName As String, labelFontSize As Long, labelFontBold As Long, _
     totalLabelFontSize As Long, totalLabelFontColor As Long)
     
+    ' === LABELS COMPACTS - DESIGN 9/10 ===
     If lig1 > 0 Then ws.Cells(lig1, 1).value = "Matin"
     If lig2 > 0 Then ws.Cells(lig2, 1).value = "Apres-Midi"
     If lig3 > 0 Then ws.Cells(lig3, 1).value = "Soir"
-    ws.Cells(rMeteo, 1).value = "METEO DU JOUR"
-    ws.Cells(rMatin, 1).value = "Matin (Ecart)"
-    ws.Cells(r7h8h, 1).value = "7h-8h (CRITIQUE)"
+    ws.Cells(rMeteo, 1).value = "METEO"
+    ws.Cells(rMatin, 1).value = "Matin"
+    ws.Cells(r7h8h, 1).value = "7h-8h " & ChrW(&H26A0)  ' ⚠
     ws.Cells(r7h8h, 1).Font.Bold = True
-    ws.Cells(r7h8h, 1).Font.Color = vbRed
-    ws.Cells(rAM, 1).value = "Apres-Midi (Ecart)"
-    ws.Cells(rSoir, 1).value = "Soir (Ecart)"
-    ws.Cells(rNuit, 1).value = "Nuit (Ecart)"
-    If rP0645 > 0 Then ws.Cells(rP0645, 1).value = "Present a 06H45"
-    If rP7H8H > 0 Then ws.Cells(rP7H8H, 1).value = "Presence entre 7h et 8h"
-    If rP81630 > 0 Then ws.Cells(rP81630, 1).value = "Presence a 8 16h30"
-    ws.Cells(rC15, 1).value = "Couverture C15"
-    ws.Cells(rC20, 1).value = "Couverture C20"
-    If rC20E > 0 Then ws.Cells(rC20E, 1).value = "Couverture C20 E"
-    ws.Cells(rC19, 1).value = "Couverture C19"
+    ws.Cells(r7h8h, 1).Font.Color = RGB(237, 125, 49)  ' Orange
+    ws.Cells(rAM, 1).value = "Apres-Midi"
+    ws.Cells(rSoir, 1).value = "Soir"
+    ws.Cells(rNuit, 1).value = "Nuit"
+    If rP0645 > 0 Then ws.Cells(rP0645, 1).value = "06h45"
+    If rP7H8H > 0 Then ws.Cells(rP7H8H, 1).value = "7h-8h"
+    If rP81630 > 0 Then ws.Cells(rP81630, 1).value = "16h30"
+    ws.Cells(rC15, 1).value = "C15"
+    ws.Cells(rC20, 1).value = "C20"
+    If rC20E > 0 Then ws.Cells(rC20E, 1).value = "C20 E"
+    ws.Cells(rC19, 1).value = "C19"
     If rNuitCode1 > 0 Then ws.Cells(rNuitCode1, 1).value = cfgNuitCode1
     If rNuitCode2 > 0 Then ws.Cells(rNuitCode2, 1).value = cfgNuitCode2
     If rNuitTotal > 0 Then ws.Cells(rNuitTotal, 1).value = "Total Nuit"
-    ws.Cells(rAction, 1).value = "DECISION"
+    ws.Cells(rAction, 1).value = "ACTION"
     
     With ws.Range(ws.Cells(rLabelStart, 1), ws.Cells(rLabelEnd, 1))
         .Font.Name = labelFontName
