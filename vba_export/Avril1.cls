@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
+Option Explicit
 Private Sub Worksheet0_Change(ByVal Target As Range)
     ' Spécifie le contenu spécifique et la largeur souhaitée
     Dim specificCode As String
@@ -27,5 +28,4 @@ End Sub
 Private Sub CommandButton120_Click()
     UserForm3.Show
 End Sub
-Option Explicit
 
