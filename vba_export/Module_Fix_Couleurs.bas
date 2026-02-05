@@ -55,16 +55,16 @@ Sub Corriger_Couleur_Bleu_Clair()
     End If
     
     ' 3. Lire la couleur de la cellule
-    colorDetectee = ws.Cells(rFound.row, colJour).Interior.Color
-    
+    couleurDetectee = ws.Cells(rFound.row, colJour).Interior.Color
+
     ' Verifier que ce n'est pas Blanc (16777215) ou Vide
-    If colorDetectee = 16777215 Or colorDetectee = 0 Then
+    If couleurDetectee = 16777215 Or couleurDetectee = 0 Then
         MsgBox "La cellule du 4 pour " & nomPersonne & " est blanche ou sans couleur !", vbExclamation
         Exit Sub
     End If
     
     ' 4. Mettre a jour Feuil_Config
-    UpdateConfigColor "COULEUR_BLEU_CLAIR", colorDetectee, "Bleu detecte auto (" & nomPersonne & ")"
+    UpdateConfigColor "COULEUR_BLEU_CLAIR", couleurDetectee, "Bleu detecte auto (" & nomPersonne & ")"
     
     
     ' --- PARTIE 2 : DETECTION JAUNE (Aurore) ---
