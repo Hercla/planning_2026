@@ -590,30 +590,61 @@ NextPerson:
     Application.ScreenUpdating = True
     Application.EnableEvents = True
     
-' === RESTAURER MASQUAGE SI MODE NUIT ACTIF ===
-    ' Vérifie si les lignes 60-62 étaient masquées (indicateur mode Nuit)
-    Dim modeNuitActif As Boolean
-    modeNuitActif = False
-    
-    ' Lire le bloc de masquage nuit depuis config
-    Dim hideBlocksNuit As String
-    hideBlocksNuit = GCS(cfg, "VIEW_Nuit_HideBlocks")
-    
-    ' Si la ligne 60 est dans les blocs à masquer ET était masquée avant, on est en mode nuit
-    ' On vérifie si la ligne 31 est masquée (ligne personnel masquée = mode nuit)
-    If ws.Rows(31).Hidden Then modeNuitActif = True
-    
-    ' Appliquer masquage si mode nuit
+' === RESTAURER MASQUAGE SELON MODE ACTIF (Jour ou Nuit) ===
+    ' Detection du mode:
+    ' - Si lignes 31-38 (nuit) sont masquees = Mode Jour actif
+    ' - Si lignes 6-28 (jour) sont masquees = Mode Nuit actif
+    Dim modeJourActif As Boolean: modeJourActif = False
+    Dim modeNuitActif As Boolean: modeNuitActif = False
+
+    ' Lire les blocs de masquage depuis config
+    Dim hideBlocksJour As String: hideBlocksJour = GCS(cfg, "VIEW_Jour_HideBlocks")
+    Dim hideBlocksNuit As String: hideBlocksNuit = GCS(cfg, "VIEW_Nuit_HideBlocks")
+
+    ' Detecter le mode actuel (AVANT que le calcul n'ait tout modifie)
+    ' Si ligne 31 (personnel nuit) est masquee, on est en Mode Jour
+    ' Si ligne 6 (personnel jour) est masquee, on est en Mode Nuit
+    If ws.Rows(31).Hidden Then
+        modeJourActif = True
+    ElseIf ws.Rows(6).Hidden Then
+        modeNuitActif = True
+    End If
+
+    Dim blocks() As String, blk As Variant
+    Dim rngParts() As String, startRow As Long, endRow As Long
+
+    ' Appliquer masquage Mode Jour si actif
+    If modeJourActif And Len(hideBlocksJour) > 0 Then
+        blocks = Split(hideBlocksJour, ";")
+        For Each blk In blocks
+            If InStr(blk, ":") > 0 Then
+                rngParts = Split(blk, ":")
+                On Error Resume Next
+                startRow = CLng(Trim$(rngParts(0)))
+                endRow = CLng(Trim$(rngParts(1)))
+                On Error GoTo 0
+                If startRow > 0 And endRow >= startRow Then
+                    ws.Rows(startRow & ":" & endRow).Hidden = True
+                End If
+            End If
+        Next blk
+        ' Masquer colonne B en mode Jour
+        ws.Columns("B").Hidden = True
+    End If
+
+    ' Appliquer masquage Mode Nuit si actif
     If modeNuitActif And Len(hideBlocksNuit) > 0 Then
-        Dim blocks() As String, blk As Variant
-        Dim rngParts() As String, startRow As Long, endRow As Long
         blocks = Split(hideBlocksNuit, ";")
         For Each blk In blocks
             If InStr(blk, ":") > 0 Then
                 rngParts = Split(blk, ":")
-                startRow = CLng(rngParts(0))
-                endRow = CLng(rngParts(1))
-                ws.Rows(startRow & ":" & endRow).Hidden = True
+                On Error Resume Next
+                startRow = CLng(Trim$(rngParts(0)))
+                endRow = CLng(Trim$(rngParts(1)))
+                On Error GoTo 0
+                If startRow > 0 And endRow >= startRow Then
+                    ws.Rows(startRow & ":" & endRow).Hidden = True
+                End If
             End If
         Next blk
     End If

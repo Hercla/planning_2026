@@ -1,7 +1,7 @@
 Attribute VB_Name = "MODULEMODES_CONFIGDRIVEN"
 '===============================================================================
 ' MODULEMODES_CONFIGDRIVEN - VERSION CORRIGEE
-' - Séparateur ";"
+' - Sï¿½parateur ";"
 ' - Protection contre les erreurs de type
 '===============================================================================
 Option Explicit
@@ -50,9 +50,9 @@ Private Sub ApplyMode(mode As ViewMode)
 
     ' 2) Get hide blocks from config
     If mode = ViewJour Then
-        hideBlocks = Module_Config.CfgText("VIEW_Jour_HideBlocks")
+        hideBlocks = CfgText("VIEW_Jour_HideBlocks")
     Else
-        hideBlocks = Module_Config.CfgText("VIEW_Nuit_HideBlocks")
+        hideBlocks = CfgText("VIEW_Nuit_HideBlocks")
     End If
 
     ' 3) Parse and hide each block - SEPARATEUR ";"
@@ -82,20 +82,24 @@ Private Sub ApplyMode(mode As ViewMode)
     AutoHideEmpty ws, mode
 
     ' 5) Headers always visible
-    hdr = Module_Config.CfgText("VIEW_HeaderRows_Keep")
+    hdr = CfgText("VIEW_HeaderRows_Keep")
     If Len(hdr) > 0 Then
         On Error Resume Next
         ws.Rows(hdr).Hidden = False
         On Error GoTo CleanUp
     End If
 
-    ' 6) Column B
+    ' 6) Column B - Always hide in Mode Jour, show in Mode Nuit
     On Error Resume Next
-    ws.Columns("B").Hidden = Module_Config.CfgBool("VIEW_HideColumnB")
+    If mode = ViewJour Then
+        ws.Columns("B").Hidden = True
+    Else
+        ws.Columns("B").Hidden = False
+    End If
     On Error GoTo CleanUp
 
     ' 7) Menu columns
-    mc = Module_Config.CfgText("VIEW_MenuCols")
+    mc = CfgText("VIEW_MenuCols")
     If Len(mc) > 0 Then
         On Error Resume Next
         ws.Columns(mc).Hidden = True
@@ -104,7 +108,7 @@ Private Sub ApplyMode(mode As ViewMode)
 
     ' 8) Zoom - avec protection
     On Error Resume Next
-    z = Module_Config.CfgText("VIEW_Zoom")
+    z = CfgText("VIEW_Zoom")
     If IsNumeric(z) And val(z) > 0 Then
         ActiveWindow.Zoom = CLng(z)
     Else
@@ -140,7 +144,7 @@ Private Sub AutoHideEmpty(ws As Worksheet, mode As ViewMode)
 
     On Error Resume Next
     
-    colName = Module_Config.CfgText("VIEW_NameCol_A")
+    colName = CfgText("VIEW_NameCol_A")
     If Len(colName) = 0 Then colName = "A"
 
     If mode = ViewJour Then
@@ -205,7 +209,7 @@ Private Function CfgBool(key As String) As Boolean
     On Error Resume Next
     CfgBool = False
     Dim val As String
-    val = UCase(Module_Config.CfgText(key))
+    val = UCase(CfgText(key))
     CfgBool = (val = "VRAI" Or val = "TRUE" Or val = "1" Or val = "OUI" Or val = "YES")
     On Error GoTo 0
 End Function
@@ -214,7 +218,7 @@ Private Function CfgLong(key As String) As Long
     On Error Resume Next
     CfgLong = 0
     Dim val As String
-    val = Module_Config.CfgText(key)
+    val = CfgText(key)
     If IsNumeric(val) Then CfgLong = CLng(val)
     On Error GoTo 0
 End Function
