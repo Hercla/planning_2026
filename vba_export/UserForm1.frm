@@ -594,7 +594,7 @@ End Sub
 
 Private Sub CommandButton93_Click()
     
-    Call Calculer_Totaux_Planning
+    Call Module_Calculer_Totaux.Calculer_Totaux_Planning
 End Sub
 
 
@@ -686,3 +686,5 @@ Private Sub InsertCodeAndMove(ByVal code As String)
         On Error GoTo 0
     End With
 End Sub
+
+

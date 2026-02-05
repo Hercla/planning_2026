@@ -36,7 +36,6 @@ Option Explicit
       Application.ScreenUpdating = True
       MsgBox "Feuil_Config nettoyée (A/B uniquement).", vbInformation
   End Sub
- Option Explicit
 
   Public Sub CheckMissingConfigKeys()
       Dim wsCfg As Worksheet

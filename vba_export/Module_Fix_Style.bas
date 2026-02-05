@@ -38,7 +38,7 @@ Sub Finaliser_Migration_Style()
     
     ' 4. Lancer le calcul sur la feuille active pour voir le resultat immediat
     MsgBox "Corrections visuelles appliquées." & vbCrLf & "Lancement du calcul pour remplir les nouvelles cases...", vbInformation
-    Application.Run "Calculer_Totaux_Planning"
+    Application.Run "Module_Calculer_Totaux.Calculer_Totaux_Planning"
 End Sub
 
 Private Sub Verif_Config_Keys()
@@ -148,3 +148,5 @@ Private Sub Verif_Config_Keys()
     wsCodes.Range("A1:O1").Interior.Color = RGB(200, 220, 240)
     wsCodes.Columns("A:O").AutoFit
 End Sub
+
+
