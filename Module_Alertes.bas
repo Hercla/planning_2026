@@ -34,7 +34,7 @@ Private Const STAFFING_MIN_AS As Long = 2         ' Aides-soignants minimum par 
 
 ' ---- CONSTANTES STRUCTURE ----
 Private Const MONTH_SHEETS As String = "Janv,Fev,Mars,Avril,Mai,Juin,Juil,Aout,Sept,Oct,Nov,Dec"
-Private Const FIRST_EMP_ROW As Long = 6
+Private Const FIRST_EMP_ROW As Long = 5
 Private Const FIRST_DAY_COL As Long = 3
 Private Const MAX_DAY_COL As Long = 33
 

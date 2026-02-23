@@ -19,7 +19,7 @@ Option Explicit
 ' ---- CONSTANTES ----
 Private Const MONTH_SHEETS As String = "Janv,Fev,Mars,Avril,Mai,Juin,Juil,Aout,Sept,Oct,Nov,Dec"
 Private Const MONTH_NAMES As String = "Janvier,Fevrier,Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,Decembre"
-Private Const FIRST_EMP_ROW As Long = 6
+Private Const FIRST_EMP_ROW As Long = 5
 Private Const FIRST_DAY_COL As Long = 3  ' Col C
 
 ' ---- QUOTAS INDIVIDUELS ----

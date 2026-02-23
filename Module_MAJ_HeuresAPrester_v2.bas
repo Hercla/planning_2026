@@ -25,7 +25,7 @@ Option Explicit
 Private Const PERSONNEL_SHEET As String = "Personnel"
 Private Const ACCUEIL_SHEET As String = "Accueil"
 Private Const YEAR_CELL As String = "F22"
-Private Const START_ROW As Long = 6
+Private Const START_ROW As Long = 5
 Private Const MONTH_SHEETS As String = "Janv,Fev,Mars,Avril,Mai,Juin,Juil,Aout,Sept,Oct,Nov,Dec"
 Private Const COL_HEURES_STD_JOUR As Long = 4   ' Colonne D dans Personnel = HeuresStdJour par agent
 

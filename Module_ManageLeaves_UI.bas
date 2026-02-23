@@ -22,7 +22,7 @@ Option Explicit
 
 Private Const DASH_SHEET As String = "Dashboard_Conges"
 Private Const MONTH_SHEETS As String = "Janv,Fev,Mars,Avril,Mai,Juin,Juil,Aout,Sept,Oct,Nov,Dec"
-Private Const FIRST_EMP_ROW As Long = 6
+Private Const FIRST_EMP_ROW As Long = 5
 
 ' ============================================================
 ' POINT D'ENTREE PRINCIPAL
@@ -531,12 +531,23 @@ Public Sub PoserCongeDepuisDashboard()
     If confirm <> vbYes Then Exit Sub
 
     ' ---- Ecriture dans le planning ----
-    EcrireCongesDansPlanning agentNom, typeConge, dateDeb, dateFin
+    ' Retourne le nb reel de jours ecrits (exclut WE, 3/4*, etc.)
+    Dim nbJoursEffectifs As Long
+    nbJoursEffectifs = EcrireCongesDansPlanning(agentNom, typeConge, dateDeb, dateFin)
+
+    If nbJoursEffectifs = 0 Then
+        MsgBox "Aucun jour de travail trouve pour " & agentNom & " entre ces dates." & vbCrLf & _
+               "(WE, jours off 4/5, ou conge deja pose)", vbExclamation, "Aucun jour ecrit"
+        Exit Sub
+    End If
+
+    ' Mettre a jour le nb jours affiche avec le reel
+    ws.Range("C12").value = nbJoursEffectifs & " jour(s)"
 
     ' ---- Ecriture historique (si Module_Conges_Engine dispo) ----
     On Error Resume Next
     Module_Conges_Engine.EcrireHistorique "", agentNom, typeConge, "PRISE", _
-        dateDeb, dateFin, nbJours, 0, 0, "Dashboard", ""
+        dateDeb, dateFin, nbJoursEffectifs, 0, 0, "Dashboard", ""
     On Error GoTo 0
 
     ' ---- Recalcul soldes ----
@@ -563,7 +574,7 @@ Public Sub PoserCongeDepuisDashboard()
     On Error GoTo 0
 
     MsgBox "Conge pose avec succes !" & vbCrLf & _
-           agentNom & " : " & typeConge & " x " & nbJours & "j" & vbCrLf & _
+           agentNom & " : " & typeConge & " x " & nbJoursEffectifs & "j" & vbCrLf & _
            "Du " & Format(dateDeb, "dd/mm/yyyy") & " au " & Format(dateFin, "dd/mm/yyyy"), _
            vbInformation, "Succes"
 End Sub
@@ -571,12 +582,14 @@ End Sub
 ' ============================================================
 ' ECRIRE CODES CONGES DANS LES FEUILLES PLANNING
 ' ============================================================
-Private Sub EcrireCongesDansPlanning(agentNom As String, typeConge As String, _
-                                     dateDeb As Date, dateFin As Date)
+Private Function EcrireCongesDansPlanning(agentNom As String, typeConge As String, _
+                                          dateDeb As Date, dateFin As Date) As Long
+    ' Retourne le nombre de jours effectivement ecrits
     Dim mSheets() As String
     mSheets = Split(MONTH_SHEETS, ",")
 
     Dim currentDate As Date
+    Dim joursEcrits As Long: joursEcrits = 0
     currentDate = dateDeb
 
     Application.ScreenUpdating = False
@@ -602,11 +615,13 @@ Private Sub EcrireCongesDansPlanning(agentNom As String, typeConge As String, _
                     dayCol = FindDayColumn(wsPlan, Day(currentDate))
 
                     If dayCol > 0 Then
-                        ' Ecrire le code conge (seulement si cellule vide ou WE)
+                        ' Ecrire le code conge SEULEMENT si la cellule contient
+                        ' un vrai horaire de travail (pas WE, 3/4*, conge existant, vide)
                         Dim existingVal As String
                         existingVal = Trim("" & wsPlan.Cells(agRow, dayCol).value)
-                        If existingVal = "" Or existingVal = "0" Then
+                        If IsHoraireTravail(existingVal) Then
                             wsPlan.Cells(agRow, dayCol).value = typeConge
+                            joursEcrits = joursEcrits + 1
                         End If
                     End If
                 End If
@@ -616,7 +631,9 @@ Private Sub EcrireCongesDansPlanning(agentNom As String, typeConge As String, _
         currentDate = currentDate + 1
     Loop
     Application.ScreenUpdating = True
-End Sub
+
+    EcrireCongesDansPlanning = joursEcrits
+End Function
 
 Private Function FindAgentRow(ws As Worksheet, agentNom As String) As Long
     Dim r As Long
@@ -642,6 +659,61 @@ Private Function FindDayColumn(ws As Worksheet, dayNum As Long) As Long
         End If
     Next c
     FindDayColumn = 0
+End Function
+
+' ============================================================
+' DETECTION HORAIRE DE TRAVAIL
+' Retourne True si la cellule contient un vrai shift (ex: "8:30",
+' "C 15", "7 15:30", "12 20"). Retourne False si: vide, WE,
+' fraction (3/4*, 4/5), code conge existant, RHS, etc.
+' ============================================================
+Private Function IsHoraireTravail(cellVal As String) As Boolean
+    IsHoraireTravail = False
+
+    ' Vide ou zero
+    If cellVal = "" Or cellVal = "0" Then Exit Function
+
+    Dim upper As String
+    upper = UCase(cellVal)
+
+    ' Weekend
+    If upper = "WE" Then Exit Function
+
+    ' Fractions (jour off temps partiel): contient "/"
+    If InStr(cellVal, "/") > 0 Then Exit Function
+
+    ' Codes conge/absence connus -> ne pas ecraser
+    Dim nonWork As Variant, code As Variant
+    nonWork = Array("CA", "EL", "ANC", "DP", "CRP", "CTR", "RCT", _
+                    "MAL", "MAT", "RHS", "RV", "FORM", "DET", "RECUP", _
+                    "C SOC", "MAL-GAR", "MAL-MUT")
+    For Each code In nonWork
+        If upper = CStr(code) Then Exit Function
+    Next code
+
+    ' Contient ":" -> format horaire (8:30, 7:15 15:45, etc.)
+    If InStr(cellVal, ":") > 0 Then
+        IsHoraireTravail = True
+        Exit Function
+    End If
+
+    ' Commence par "C " + chiffre -> code shift (C 15, C 20, C 20 E)
+    If Left(upper, 2) = "C " And Len(upper) >= 3 Then
+        If Mid(upper, 3, 1) >= "0" And Mid(upper, 3, 1) <= "9" Then
+            IsHoraireTravail = True
+            Exit Function
+        End If
+    End If
+
+    ' Commence par un chiffre -> horaire numerique (7 13, 12 20, 8 16:30)
+    If Len(cellVal) > 0 Then
+        If Left(cellVal, 1) >= "0" And Left(cellVal, 1) <= "9" Then
+            IsHoraireTravail = True
+            Exit Function
+        End If
+    End If
+
+    ' Tout le reste: code inconnu -> par securite, ne pas ecraser
 End Function
 
 ' ============================================================

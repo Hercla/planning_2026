@@ -38,7 +38,7 @@ Public Const HEURES_PAR_JOUR_RCT As Double = 7.6
 
 ' ---- CONSTANTES PRIVEES: STRUCTURE FEUILLES ----
 Private Const MONTH_SHEETS As String = "Janv,Fev,Mars,Avril,Mai,Juin,Juil,Aout,Sept,Oct,Nov,Dec"
-Private Const FIRST_EMP_ROW As Long = 6          ' Premiere ligne agent
+Private Const FIRST_EMP_ROW As Long = 5          ' Premiere ligne agent
 Private Const FIRST_DAY_COL As Long = 3          ' Colonne C = jour 1
 Private Const MAX_DAY_COL As Long = 33           ' Colonne AG = jour 31
 Private Const BILAN_SHEET_NAME As String = "Bilan Heures Sup"
