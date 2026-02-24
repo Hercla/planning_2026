@@ -373,11 +373,10 @@ Public Sub RefreshSoldesAgent()
 
     ' Lire depuis feuille Soldes_Conges/Soldes Conges
     Dim lastRowS As Long, rS As Long
-    lastRowS = wsSoldes.Cells(wsSoldes.Rows.Count, 1).End(xlUp).row
+    lastRowS = wsSoldes.Cells(wsSoldes.Rows.Count, 2).End(xlUp).row
     For rS = 2 To lastRowS
         Dim agS As String
-        agS = Trim("" & wsSoldes.Cells(rS, 1).value)
-        If agS = "" Then agS = Trim("" & wsSoldes.Cells(rS, 2).value)
+        agS = Trim("" & wsSoldes.Cells(rS, 2).value) ' Col B = Nom (pas Matricule)
         If UCase(agS) = UCase(agentNom) Then
             ' Trouver les colonnes Quota/Solde pour chaque type
             ' Structure Soldes_Conges: CA_Acquis(C), CA_Pris(D), CA_Solde(E), etc.
@@ -544,38 +543,44 @@ Public Sub PoserCongeDepuisDashboard()
     ' Mettre a jour le nb jours affiche avec le reel
     ws.Range("C12").value = nbJoursEffectifs & " jour(s)"
 
-    ' ---- Ecriture historique (si Module_Conges_Engine dispo) ----
-    On Error Resume Next
-    Module_Conges_Engine.EcrireHistorique "", agentNom, typeConge, "PRISE", _
-        dateDeb, dateFin, nbJoursEffectifs, 0, 0, "Dashboard", ""
-    On Error GoTo 0
-
-    ' ---- Recalcul soldes ----
+    ' ---- Recalcul soldes D'ABORD (avant historique) ----
     On Error Resume Next
     Module_Conges_Engine.RecalculerTousSoldes
+    On Error GoTo 0
+
+    ' ---- Lire le solde APRES recalcul ----
+    Dim soldeApres As Double
+    Dim soldeAvant As Double
+    Dim typeCode As String
+    typeCode = LCase(Replace(typeConge, " ", "_"))
+    If typeCode = "c_soc" Then typeCode = "c_soc"
+
+    On Error Resume Next
+    soldeApres = Module_Conges_Engine.GetSoldeAgent(agentNom, typeCode)
+    soldeAvant = soldeApres + nbJoursEffectifs ' Solde avant = solde actuel + ce qu'on vient de prendre
+    On Error GoTo 0
+
+    ' ---- Ecriture historique AVEC vrais soldes ----
+    On Error Resume Next
+    Module_Conges_Engine.EcrireHistorique "", agentNom, typeConge, "PRISE", _
+        dateDeb, dateFin, nbJoursEffectifs, soldeAvant, soldeApres, "Dashboard", ""
     On Error GoTo 0
 
     ' ---- Refresh UI ----
     RefreshSoldesAgent
 
-    ' ---- Solde apres ----
-    On Error Resume Next
-    Dim soldeApres As Double
-    Dim typeCode As String
-    typeCode = LCase(Replace(typeConge, " ", "_"))
-    If typeCode = "c_soc" Then typeCode = "c_soc"
-    soldeApres = Module_Conges_Engine.GetSoldeAgent(agentNom, typeCode)
+    ' ---- Afficher solde apres deduction ----
     ws.Range("C14").value = soldeApres & " jour(s)"
     If soldeApres < 0 Then
         ws.Range("C14").Font.Color = RGB(204, 0, 0)
     Else
         ws.Range("C14").Font.Color = RGB(0, 128, 0)
     End If
-    On Error GoTo 0
 
     MsgBox "Conge pose avec succes !" & vbCrLf & _
            agentNom & " : " & typeConge & " x " & nbJoursEffectifs & "j" & vbCrLf & _
-           "Du " & Format(dateDeb, "dd/mm/yyyy") & " au " & Format(dateFin, "dd/mm/yyyy"), _
+           "Du " & Format(dateDeb, "dd/mm/yyyy") & " au " & Format(dateFin, "dd/mm/yyyy") & vbCrLf & _
+           "Solde " & UCase(typeConge) & " : " & soldeAvant & " -> " & soldeApres, _
            vbInformation, "Succes"
 End Sub
 
